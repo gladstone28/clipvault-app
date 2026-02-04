@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClipVault</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>ClipVault</h1>
+    <p>Your personal video library</p>
+  </header>
+  <aside class="sidebar">
+    <nav>
+      <ul id="collections-list">
+        <li class="collection-item active" data-collection-id="all">All Clips</li>
+        <li class="collection-item" data-collection-id="work">Work</li>
+        <li class="collection-item" data-collection-id="family">Family</li>
+        <li class="collection-item" data-collection-id="events">Events</li>
+      </ul>
+      <button id="add-collection-btn">+ New Collection</button>
+    </nav>
+  </aside>
+  <main class="main-content">
+    <section class="clip-list-section">
+      <div class="clip-actions">
+        <input type="text" id="search-input" placeholder="Search clips...">
+        <button id="add-clip-btn">+ Add New Clip</button>
+      </div>
+      <div id="clip-list" class="clip-grid">
+        <!-- Clips will be loaded here by JavaScript -->
+      </div>
+    </section>
+    <section class="clip-viewer-section">
+      <div id="current-clip-viewer">
+        <!-- Current clip details and viewer will load here -->
+        <div class="placeholder-text">Select a clip to view</div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

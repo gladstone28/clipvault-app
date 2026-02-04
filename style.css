@@ -1,0 +1,66 @@
+/* style.css */
+:root {
+  --primary-color: #5C6BC0;
+  --primary-light: #7986CB;
+  --primary-dark: #3F51B5;
+  --secondary-color: #FFC107;
+  --background-color: #F8F9FA;
+  --surface-color: #FFFFFF;
+  --text-color: #212529;
+  --light-text-color: #6C757D;
+  --border-color: #DEE2E6;
+  --font-family: 'Roboto', sans-serif;
+  --spacing-unit: 8px;
+}
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  min-height: 100vh;
+  flex-direction: row; /* Default layout for larger screens */
+}
+.app-header {
+  background-color: var(--primary-dark);
+  color: white;
+  padding: var(--spacing-unit) calc(var(--spacing-unit) * 2);
+  text-align: center;
+  grid-area: header; /* For grid layout */
+}
+.sidebar {
+  width: 250px;
+  background-color: var(--surface-color);
+  border-right: 1px solid var(--border-color);
+  padding: calc(var(--spacing-unit) * 2) var(--spacing-unit);
+  flex-shrink: 0; /* Prevent shrinking */
+  grid-area: sidebar; /* For grid layout */
+}
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row; /* Default layout for larger screens */
+  padding: calc(var(--spacing-unit) * 2);
+  gap: calc(var(--spacing-unit) * 2);
+  grid-area: main; /* For grid layout */
+}
+.clip-list-section, .clip-viewer-section {
+  flex: 1;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: calc(var(--spacing-unit) * 2);
+}
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .main-content {
+    flex-direction: column;
+  }
+}
