@@ -1,45 +1,219 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClipVault</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header class="app-header">
-    <h1>ClipVault</h1>
-    <p>Your personal video library</p>
-  </header>
-  <aside class="sidebar">
-    <nav>
-      <ul id="collections-list">
-        <li class="collection-item active" data-collection-id="all">All Clips</li>
-        <li class="collection-item" data-collection-id="work">Work</li>
-        <li class="collection-item" data-collection-id="family">Family</li>
-        <li class="collection-item" data-collection-id="events">Events</li>
-      </ul>
-      <button id="add-collection-btn">+ New Collection</button>
-    </nav>
-  </aside>
-  <main class="main-content">
-    <section class="clip-list-section">
-      <div class="clip-actions">
-        <input type="text" id="search-input" placeholder="Search clips...">
-        <button id="add-clip-btn">+ Add New Clip</button>
-      </div>
-      <div id="clip-list" class="clip-grid">
-        <!-- Clips will be loaded here by JavaScript -->
-      </div>
-    </section>
-    <section class="clip-viewer-section">
-      <div id="current-clip-viewer">
-        <!-- Current clip details and viewer will load here -->
-        <div class="placeholder-text">Select a clip to view</div>
-      </div>
-    </section>
-  </main>
-  <script src="script.js"></script>
-</body>
+  <head>
+    <!-- SECTION: Meta & Title -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ClipVault · Video Storage & Sharing</title>
+
+    <!-- SECTION: Fonts -->
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- SECTION: Styles -->
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <!-- SECTION: Header -->
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-mark">CV</div>
+          <div class="brand-copy">
+            <h1 class="brand-title">ClipVault</h1>
+            <p class="brand-subtitle">Store. Find. Share in seconds.</p>
+          </div>
+        </div>
+        <div class="header-meta">
+          <span class="badge badge-live">Video toolkit</span>
+          <span class="header-hint">Organize clips by category and share with a scan.</span>
+        </div>
+      </header>
+
+      <!-- SECTION: Main Layout -->
+      <main class="layout">
+        <!-- COLUMN: Left – Collections & List -->
+        <section class="column column-left" aria-label="Video collections and list">
+          <!-- SECTION: Category / Folder Sidebar -->
+          <aside class="panel panel-categories">
+            <div class="panel-header">
+              <h2 class="panel-title">Collections</h2>
+              <button class="icon-button" id="newCategoryButton" type="button">
+                <span class="icon-plus"></span>
+                <span class="icon-label">New</span>
+              </button>
+            </div>
+            <div class="category-list" id="categoryList" aria-label="Video categories">
+              <!-- Categories injected by JS -->
+            </div>
+          </aside>
+
+          <!-- SECTION: Video List -->
+          <section class="panel panel-videos" aria-label="Saved videos">
+            <div class="panel-header">
+              <div>
+                <h2 class="panel-title">Videos</h2>
+                <p class="panel-subtitle" id="activeCategoryLabel">All clips · 0 saved</p>
+              </div>
+              <div class="video-filters">
+                <label class="field field-search">
+                  <span class="field-label">Search</span>
+                  <input
+                    id="searchInput"
+                    type="search"
+                    placeholder="Search by title or notes"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <ul class="video-list" id="videoList">
+              <!-- Video items injected by JS -->
+            </ul>
+
+            <p class="empty-hint" id="videoEmptyState">
+              No videos yet. Add your first clip on the right →
+            </p>
+          </section>
+        </section>
+
+        <!-- COLUMN: Right – Add, View, Share -->
+        <section class="column column-right" aria-label="Add, view and share video">
+          <!-- SECTION: Add Video Form -->
+          <section class="panel panel-form" aria-label="Add a video">
+            <div class="panel-header">
+              <h2 class="panel-title">Add video</h2>
+              <p class="panel-subtitle">Store any video URL and assign it to a collection.</p>
+            </div>
+
+            <form id="videoForm" class="video-form">
+              <div class="field-group">
+                <label class="field">
+                  <span class="field-label">Video title</span>
+                  <input
+                    id="titleInput"
+                    type="text"
+                    required
+                    placeholder="e.g. Product demo – short version"
+                  />
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Video URL</span>
+                  <input
+                    id="urlInput"
+                    type="url"
+                    required
+                    placeholder="https://... (YouTube, Vimeo, hosted link)"
+                  />
+                </label>
+              </div>
+
+              <div class="field-group field-group--two">
+                <label class="field">
+                  <span class="field-label">Collection</span>
+                  <select id="categorySelect" required></select>
+                </label>
+
+                <label class="field">
+                  <span class="field-label">Tag color</span>
+                  <select id="accentSelect">
+                    <option value="accent-blue">Ocean</option>
+                    <option value="accent-amber">Sunrise</option>
+                    <option value="accent-pink">Punch</option>
+                    <option value="accent-emerald">Field</option>
+                    <option value="accent-violet">Night</option>
+                  </select>
+                </label>
+              </div>
+
+              <label class="field">
+                <span class="field-label">Notes</span>
+                <textarea
+                  id="notesInput"
+                  rows="2"
+                  placeholder="Context, who it's for, when to use it..."
+                ></textarea>
+              </label>
+
+              <div class="form-footer">
+                <span class="form-hint">Stored locally in this browser.</span>
+                <button class="button button-primary" type="submit">
+                  Save video
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- SECTION: Player & Share -->
+          <section class="panel panel-viewer" aria-label="Preview and share">
+            <div class="panel-header panel-header--compact">
+              <h2 class="panel-title">Now playing</h2>
+              <p class="panel-subtitle" id="nowPlayingLabel">Select a video from your list.</p>
+            </div>
+
+            <div class="viewer-grid">
+              <div class="viewer-main">
+                <div class="viewer-frame" id="viewerFrame">
+                  <div class="viewer-placeholder">
+                    <span class="viewer-badge">Preview</span>
+                    <p>Pick a video to see it here.</p>
+                  </div>
+                </div>
+
+                <div class="viewer-meta" id="viewerMeta">
+                  <!-- Filled in when a video is selected -->
+                </div>
+              </div>
+
+              <aside class="viewer-share" aria-label="Share via QR code">
+                <h3 class="viewer-share-title">Share instantly</h3>
+                <p class="viewer-share-text">
+                  When you select a video, a QR code appears here. Ask someone to
+                  scan it to open the video link.
+                </p>
+                <div class="qr-shell" id="qrShell">
+                  <div class="qr-placeholder">
+                    <div class="qr-dots"></div>
+                    <p>No video selected</p>
+                  </div>
+                </div>
+                <button
+                  class="button button-ghost"
+                  type="button"
+                  id="copyLinkButton"
+                  disabled
+                >
+                  Copy video link
+                </button>
+                <p class="copy-feedback" id="copyFeedback" aria-live="polite"></p>
+              </aside>
+            </div>
+          </section>
+        </section>
+      </main>
+
+      <!-- SECTION: Footer -->
+      <footer class="app-footer">
+        <p>
+          Stored with localStorage · Designed for quick recall before meetings,
+          calls, or events.
+        </p>
+      </footer>
+    </div>
+
+    <!-- SECTION: Scripts -->
+    <script src="script.js"></script>
+  </body>
 </html>
